@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "public": true,
+  "builds": [
+    { "src": "dist/space-habitat-designer.web/**", "use": "@vercel/static" }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}

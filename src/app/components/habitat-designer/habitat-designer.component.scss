@@ -1,0 +1,124 @@
+/* --- Variables de Design "Holo-Interface" --- */
+:host {
+  --panel-background: #1e1e2f; // Un bleu très sombre
+  --panel-border: #4a4a6a;
+  --text-primary: #e0e0e6;
+  --text-secondary: #9a9ab0;
+  --accent-glow: #00e5ff; // Cyan électrique
+  --danger-glow: #ff4d4d;
+  --success-glow: #4dff88;
+  --panel-width: 340px;
+  --spacing-unit: 16px;
+  --border-radius: 8px;
+  --transition-speed: 0.2s;
+}
+
+/* --- Structure Globale --- */
+.designer-container {
+  display: flex;
+  height: calc(100vh - 64px); // Ajuster si vous avez une barre de navigation
+  font-family: 'Roboto', sans-serif;
+}
+
+/* --- Panneau de Contrôle Principal --- */
+.controls-panel {
+  width: var(--panel-width);
+  background-color: var(--panel-background);
+  border-right: 1px solid var(--panel-border);
+  padding: var(--spacing-unit);
+  box-sizing: border-box;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing-unit) * 1.5);
+  transition: all var(--transition-speed) ease-in-out;
+
+  h2 {
+    font-size: 1.2em;
+    font-weight: 400;
+    color: var(--accent-glow);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--panel-border);
+  }
+
+  p {
+    color: var(--text-secondary);
+    strong {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+  }
+
+  // Override Material styles for a custom look
+  ::ng-deep .mat-mdc-form-field-flex {
+    background-color: rgba(0,0,0,0.2) !important;
+  }
+}
+
+/* --- Panneau de la Zone Sélectionnée (le highlight !) --- */
+.selected-zone-info {
+  background-color: rgba(0,0,0,0.2);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-unit);
+  border: 1px solid var(--accent-glow);
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.2); // Effet de lueur
+  transition: all var(--transition-speed) ease;
+
+  h4 {
+    color: var(--accent-glow);
+    font-size: 1.1em;
+    margin: 0 0 var(--spacing-unit) 0;
+    text-align: center;
+  }
+
+  h5 {
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    font-size: 0.8em;
+    letter-spacing: 0.5px;
+    margin: var(--spacing-unit) 0 8px 0;
+  }
+
+  .property-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .level-controls {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 8px;
+  }
+}
+
+/* --- Section Validation --- */
+.validation-section {
+  .validation-results {
+    .success-message {
+      color: var(--success-glow);
+      text-align: center;
+      font-weight: 500;
+    }
+
+    // Styles pour l'accordéon d'erreurs
+    ::ng-deep .mat-expansion-panel {
+      background-color: rgba(255, 77, 77, 0.1) !important;
+      border: 1px solid var(--danger-glow);
+      box-shadow: 0 0 10px rgba(255, 77, 77, 0.15) !important;
+    }
+    ::ng-deep .mat-expansion-panel-header-title {
+      color: var(--danger-glow) !important;
+    }
+  }
+}
+
+/* --- Conteneur de la Scène 3D --- */
+.scene-container {
+  flex-grow: 1;
+  background-color: #000; // Fond noir pour un meilleur contraste
+}

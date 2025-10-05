@@ -1,0 +1,126 @@
+<div class="designer-container">
+  <div class="controls-panel">
+    <div class="controls-section  habitat-settings-section">
+    <h2>Paramètres de l'Habitat</h2>
+     <mat-form-field appearance="fill">
+      <mat-label>Forme de l'Habitat</mat-label>
+      <mat-select [(ngModel)]="habitatShape" (ngModelChange)="updateHabitat()">
+        @for (shape of availableShapes; track shape.value) {
+          <mat-option [value]="shape.value">{{ shape.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Rayon (m)</mat-label>
+      <input matInput type="number" [(ngModel)]="habitatRadius" (ngModelChange)="updateHabitat()">
+    </mat-form-field>
+
+    <!-- Afficher la hauteur seulement si c'est un cylindre -->
+    <mat-form-field appearance="fill" *ngIf="habitatShape === habitatShapeEnum.Cylindre">
+      <mat-label>Hauteur (m)</mat-label>
+      <input matInput type="number" [(ngModel)]="habitatHeight" (ngModelChange)="updateHabitat()">
+    </mat-form-field>
+    <p><strong>Volume actuel :</strong> {{ currentVolume | number:'1.2-2' }} m³</p>
+    <p><strong>Volume par personne :</strong> {{ currentVolume / crewSize | number:'1.2-2' }} m³</p>
+    </div>
+
+    <!-- AJOUT DE LA SECTION POUR LES PARAMÈTRES DE MISSION -->
+       <div class="mission-settings-section">
+         <h2>Paramètres de la Mission</h2>
+         <mat-form-field appearance="fill">
+           <mat-label>Taille de l'équipage</mat-label>
+           <input matInput type="number" min="1"  max="12" [(ngModel)]="crewSize">
+         </mat-form-field>
+
+          <mat-form-field appearance="fill">
+        <mat-label>Destination</mat-label>
+        <mat-select [(ngModel)]="destination">
+          @for (dest of availableDestinations; track dest.value) {
+            <mat-option [value]="dest.value">{{ dest.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+       </div>
+    
+    <mat-form-field appearance="fill">
+      <mat-label>Durée de la mission (jours)</mat-label>
+      <input matInput type="number" min="1" [(ngModel)]="missionDuration">
+    </mat-form-field>
+
+
+     <div class="controls-section zones-section">
+     <h2>Zones Fonctionnelles</h2>
+    <mat-form-field appearance="fill">
+      <mat-label>Type de zone à ajouter</mat-label>
+      <mat-select [(ngModel)]="selectedZoneTypeToAdd">
+        @for (zoneType of availableZoneTypes; track zoneType.type) {
+          <mat-option [value]="zoneType.type">{{ zoneType.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="addZone()">Ajouter une zone</button>
+    </div>
+
+
+    @if (selectedZone) {
+      <h3>Zone Sélectionnée</h3>
+      <div class="controls-section selected-zone-info">
+        <p><strong>Nom:</strong> {{ selectedZone.name }}</p>
+        <p><strong>Position:</strong> X: {{ selectedZone.positionX | number:'1.2-2' }}, Y: {{ selectedZone.positionY | number:'1.2-2' }}, Z: {{ selectedZone.positionZ | number:'1.2-2' }}</p>
+        <p><strong>Dimensions:</strong> L: {{ selectedZone.widthM | number:'1.2-2' }}m x P: {{ selectedZone.depthM | number:'1.2-2' }}m x H: {{ selectedZone.heightM | number:'1.2-2' }}m</p>
+        <p><strong>Volume:</strong> {{ (selectedZone.widthM * selectedZone.depthM * selectedZone.heightM) | number:'1.2-2' }} m³</p>
+        
+        <!-- Les boutons pour changer le mode -->
+        <mat-button-toggle-group 
+          name="transformMode" 
+          aria-label="Mode de transformation"
+          [value]="currentTransformMode"
+          (change)="setTransformMode($event.value)">
+          <mat-button-toggle [value]="TransformMode.Translate">Déplacer</mat-button-toggle>
+          <mat-button-toggle [value]="TransformMode.Scale">Redimensionner</mat-button-toggle>
+        </mat-button-toggle-group>
+        
+        <button mat-stroked-button (click)="deselectZone()" style="margin-top: 10px;">Désélectionner</button>
+      </div>
+    }
+    
+    <hr>
+
+    <h2>Validation</h2>
+    <button mat-stroked-button color="warn" (click)="validate()">Valider la conception</button>
+    
+    <div class="controls-section validation-results">
+      @if (validationErrors.length > 0) {
+        <mat-accordion>
+          @for (error of validationErrors; track error.message) {
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  {{ error.isValid ? 'Avertissement' : 'Erreur' }}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <p>{{ error.message }}</p>
+            </mat-expansion-panel>
+          }
+        </mat-accordion>
+      } @else {
+        <p style="color: green;">Aucune erreur détectée.</p>
+      }
+    </div>
+  </div> <!-- Fin de .controls-panel -->
+
+  <div class="scene-container">
+    <canvas appThreeScene
+            [habitatShape]="habitatShape"
+            [habitatRadius]="habitatRadius"
+            [habitatHeight]="habitatHeight"
+            [zones]="zones"
+            [invalidZoneIds]="invalidZoneIds"
+            [habitatTransparent]="isHabitatTransparent"
+            [transformMode]="currentTransformMode" 
+            (zoneSelected)="selectZone($event)"
+            (zoneUpdated)="onZoneUpdated($event)">
+    </canvas>
+  </div>
+</div>

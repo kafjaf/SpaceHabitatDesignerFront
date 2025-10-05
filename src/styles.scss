@@ -1,1 +1,429 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+
+// Définition de ton thème principal compatible M3
+$space-theme: mat.define-theme((
+  color: (
+    theme-type: dark,
+    primary: mat.$blue-palette,
+    tertiary: mat.$cyan-palette,
+  ),
+  typography: (
+    brand-family: 'Roboto',
+    plain-family: 'Helvetica Neue, Arial, sans-serif',
+  ),
+  density: (
+    scale: 0,
+  ),
+));
+
+// Appliquer le thème globalement
+:root {
+  @include mat.all-component-themes($space-theme);
+}
+
+/* --- Variables de Design Spatial Modernisées --- */
+:root {
+  --panel-background: linear-gradient(135deg, #1e1e2f 0%, #252540 100%);
+  --panel-border: rgba(74, 74, 106, 0.6);
+  --text-primary: #e0e0e6;
+  --text-secondary: #9a9ab0;
+  --accent-glow: #00e5ff;
+  --accent-glow-dim: rgba(0, 229, 255, 0.3);
+  --danger-glow: #ff4d4d;
+  --success-glow: #4dff88;
+  --warning-glow: #ffb84d;
+  --panel-width: 380px;
+  --spacing-unit: 20px;
+  --border-radius: 12px;
+  --border-radius-sm: 8px;
+  --transition-speed: 0.3s;
+  --shadow-glow: 0 0 20px rgba(0, 229, 255, 0.15);
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* --- Reset et Styles Globaux --- */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+  background: #121212;
+  color: var(--text-primary);
+  overflow: hidden;
+}
+
+/* --- Header Principal --- */
+.main-header {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1e1e2f 0%, #2a2a45 100%);
+  border-bottom: 1px solid var(--panel-border);
+  box-shadow: var(--shadow-soft);
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      var(--accent-glow) 50%, 
+      transparent 100%);
+  }
+  
+  h1 {
+    margin: 0;
+    font-size: 1.8em;
+    font-weight: 300;
+    color: var(--text-primary);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    
+    &::after {
+      content: '🚀';
+      margin-left: 12px;
+      font-size: 0.9em;
+      filter: drop-shadow(0 0 8px var(--accent-glow));
+    }
+  }
+}
+
+/* --- Structure Principale --- */
+.designer-container {
+  display: flex;
+  height: calc(100vh - 72px);
+  background: #0a0a0f;
+}
+
+/* --- Panneau de Contrôle --- */
+.controls-panel {
+  width: var(--panel-width);
+  background: var(--panel-background);
+  border-right: 1px solid var(--panel-border);
+  padding: var(--spacing-unit);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit);
+  box-shadow: var(--shadow-soft);
+  
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: var(--accent-glow-dim);
+    border-radius: 3px;
+    
+    &:hover {
+      background: var(--accent-glow);
+    }
+  }
+}
+
+/* --- Sections du Panneau --- */
+.controls-section {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--border-radius);
+  padding: calc(var(--spacing-unit) * 1.2);
+  transition: all var(--transition-speed) ease;
+  backdrop-filter: blur(10px);
+  
+  &:hover {
+    border-color: var(--accent-glow-dim);
+    box-shadow: var(--shadow-glow);
+  }
+  
+  h2 {
+    font-size: 1.1em;
+    font-weight: 500;
+    color: var(--accent-glow);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 0 calc(var(--spacing-unit) * 0.8) 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--panel-border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    
+    &::before {
+      content: '▸';
+      font-size: 0.9em;
+      opacity: 0.7;
+    }
+  }
+}
+
+/* --- Styles des Formulaires Material --- */
+::ng-deep {
+  .mat-mdc-form-field {
+    width: 100%;
+    margin-bottom: 12px;
+    
+    .mdc-text-field--filled {
+      background: rgba(0, 0, 0, 0.4) !important;
+      border-radius: var(--border-radius-sm) !important;
+      transition: all var(--transition-speed) ease;
+      
+      &:hover {
+        background: rgba(0, 0, 0, 0.5) !important;
+      }
+      
+      &.mdc-text-field--focused {
+        background: rgba(0, 0, 0, 0.6) !important;
+        border-color: var(--accent-glow) !important;
+      }
+    }
+    
+    .mat-mdc-form-field-focus-overlay {
+      background: transparent !important;
+    }
+    
+    .mat-mdc-select-value {
+      color: var(--text-primary) !important;
+    }
+    
+    .mat-mdc-select-arrow {
+      color: var(--text-secondary) !important;
+    }
+  }
+  
+  .mat-mdc-option {
+    &.mdc-list-item--selected {
+      background: rgba(0, 229, 255, 0.1) !important;
+    }
+    
+    &:hover:not(.mdc-list-item--disabled) {
+      background: rgba(0, 229, 255, 0.05) !important;
+    }
+  }
+}
+
+/* --- Boutons et Interactions --- */
+button {
+  transition: all var(--transition-speed) ease !important;
+  
+  &.mat-raised-button {
+    border-radius: var(--border-radius-sm) !important;
+    
+    &[color="primary"] {
+      background: linear-gradient(135deg, var(--accent-glow) 0%, #0099cc 100%) !important;
+      box-shadow: 0 4px 15px rgba(0, 229, 255, 0.3) !important;
+      
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 229, 255, 0.4) !important;
+      }
+    }
+  }
+  
+  &.mat-stroked-button {
+    border-radius: var(--border-radius-sm) !important;
+    border: 1px solid var(--panel-border) !important;
+    
+    &:hover {
+      border-color: var(--accent-glow) !important;
+      background: rgba(0, 229, 255, 0.05) !important;
+    }
+    
+    &[color="warn"] {
+      border-color: var(--danger-glow) !important;
+      color: var(--danger-glow) !important;
+      
+      &:hover {
+        background: rgba(255, 77, 77, 0.1) !important;
+        box-shadow: 0 0 15px rgba(255, 77, 77, 0.2) !important;
+      }
+    }
+  }
+}
+
+/* --- Zone Sélectionnée (Highlight) --- */
+.selected-zone-info {
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-unit);
+  border: 1px solid var(--accent-glow);
+  box-shadow: var(--shadow-glow);
+  animation: pulse-glow 2s ease-in-out infinite alternate;
+  
+  h3 {
+    color: var(--accent-glow);
+    font-size: 1.1em;
+    margin: 0 0 calc(var(--spacing-unit) * 0.8) 0;
+    text-align: center;
+    font-weight: 500;
+  }
+  
+  .property-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 16px;
+    margin-bottom: 12px;
+    
+    p {
+      margin: 4px 0;
+      font-size: 0.9em;
+      
+      strong {
+        color: var(--accent-glow);
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+@keyframes pulse-glow {
+  from {
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
+  }
+  to {
+    box-shadow: 0 0 25px rgba(0, 229, 255, 0.4);
+  }
+}
+
+/* --- Contrôles de Transformation --- */
+.mat-button-toggle-group {
+  border-radius: var(--border-radius-sm) !important;
+  overflow: hidden;
+  border: 1px solid var(--panel-border) !important;
+  
+  .mat-button-toggle {
+    background: rgba(0, 0, 0, 0.3);
+    color: var(--text-secondary);
+    
+    &.mat-button-toggle-checked {
+      background: rgba(0, 229, 255, 0.2);
+      color: var(--accent-glow);
+    }
+    
+    &:hover:not(.mat-button-toggle-checked) {
+      background: rgba(255, 255, 255, 0.05);
+    }
+  }
+}
+
+/* --- Section Validation --- */
+.validation-section {
+  .validation-results {
+    .success-message {
+      color: var(--success-glow);
+      text-align: center;
+      font-weight: 500;
+      padding: 12px;
+      background: rgba(77, 255, 136, 0.1);
+      border-radius: var(--border-radius-sm);
+      border: 1px solid var(--success-glow);
+    }
+  }
+}
+
+::ng-deep {
+  .mat-expansion-panel {
+    background: rgba(255, 77, 77, 0.1) !important;
+    border: 1px solid var(--danger-glow) !important;
+    border-radius: var(--border-radius-sm) !important;
+    box-shadow: 0 0 10px rgba(255, 77, 77, 0.15) !important;
+    
+    .mat-expansion-panel-header {
+      background: transparent !important;
+      
+      .mat-expansion-panel-header-title {
+        color: var(--danger-glow) !important;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+/* --- Conteneur de la Scène 3D --- */
+.scene-container {
+  flex: 1;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(30, 30, 47, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(0, 229, 255, 0.1) 0%, transparent 50%),
+    #000000;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      linear-gradient(45deg, transparent 48%, rgba(0, 229, 255, 0.03) 50%, transparent 52%),
+      linear-gradient(-45deg, transparent 48%, rgba(0, 229, 255, 0.03) 50%, transparent 52%);
+    background-size: 50px 50px;
+    pointer-events: none;
+    opacity: 0.3;
+  }
+  
+  canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* --- Séparateurs --- */
+hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    var(--panel-border) 50%, 
+    transparent 100%);
+  margin: calc(var(--spacing-unit) * 1.5) 0;
+}
+
+/* --- Responsive --- */
+@media (max-width: 1200px) {
+  :root {
+    --panel-width: 340px;
+    --spacing-unit: 16px;
+  }
+}
+
+/* --- États Disabled --- */
+:disabled {
+  opacity: 0.5;
+  cursor: not-allowed !important;
+  
+  &:hover {
+    transform: none !important;
+  }
+}
+
+/* ... (à la fin de ton fichier de styles existant) ... */
+
+/* --- Styles pour les Étiquettes 3D --- */
+.zone-label {
+  color: var(--text-primary);
+  background: rgba(30, 30, 47, 0.8); /* Fond semi-transparent */
+  backdrop-filter: blur(5px); /* Effet de verre dépoli */
+  padding: 4px 12px;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--panel-border);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap; /* Empêche le texte de passer à la ligne */
+  transform: translate(-50%, -50%); /* Centre l'étiquette sur sa position */
+  transition: all 0.2s ease;
+}

@@ -1,0 +1,17 @@
+.main-header {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #1e1e2f;
+  border-bottom: 1px solid #4a4a6a;
+  
+  h1 {
+    margin: 0;
+    font-size: 1.5em;
+    font-weight: 300;
+    color: #00e5ff;
+    letter-spacing: 4px;
+    text-shadow: 0 0 5px rgba(0, 229, 255, 0.5);
+  }
+}
